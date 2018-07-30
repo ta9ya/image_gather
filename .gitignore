@@ -1,3 +1,4 @@
 *.jpg
 __pycache__
 img/
+.idae/
