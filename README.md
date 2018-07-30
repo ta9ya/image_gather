@@ -5,7 +5,7 @@ python3.6で動作確認しています。
 
 # Installation
 
-1. ```repository```を`clone`します。  
+1. repositoryを`clone`します。  
 ```$ git clone https://github.com/ta9ya/image_gather.git```
 
 1. 必要モジュールをインストールします。  
