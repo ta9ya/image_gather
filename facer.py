@@ -1,11 +1,10 @@
 import cv2
 import sys
 
+
 class Facer:
 
-    def __init__(self,cascade):
-#        self.classifier = cv2.CascadeClassifier('haarcascade/'+ str(cascade))
-# CascadeClassifier direct input 2018/5/1
+    def __init__(self):
         self.classifier = cv2.CascadeClassifier("./haarcascade_frontalface_alt.xml")
 
     def draw_rect(self, encode, color=tuple([0, 0, 255]), thickness=5):
