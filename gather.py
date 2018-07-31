@@ -10,6 +10,7 @@ from facer import Facer
 
 MY_UA = ''
 
+
 class Fetcher:
 	'''
 	受け取ったurlを指定されたuaでリクエストし、html、MIMEタイプとエンコード（Content-Type）を貰う
@@ -34,10 +35,14 @@ class Fetcher:
 def html_scraping(url):
 	img_link_elem = []
 	byte_content, mime = fetcher.fetch(url)
+
+	# html analyze by bs4
 	soup = BeautifulSoup(byte_content.decode('UTF-8'), 'html.parser')
 	elem = soup.find_all('img')
 	img_link_elem.extend(elem)
-	return img_link_elem
+	img_urls = [e.get('src') for e in img_link_elem]
+
+	return img_urls
 
 
 def url_search(word, n):
@@ -48,10 +53,7 @@ def url_search(word, n):
 	:return: 画像のURL群　これをpcのフォルダにDLして終わり
 	'''
 	code = '&ei=UTF-8'
-	#URLの受け皿
-	img_link_elem = []
-
-	# n = n + 1
+	img_urls = []
 
 	if 60 < n:
 		iter_num = int(n / 60)
@@ -59,18 +61,15 @@ def url_search(word, n):
 		print(iter_num)
 		for i in range(2, iter_num+2):
 			url = ('https://search.yahoo.co.jp/image/search?n=60&p={}{}' + code).format(quote(word), i)
-			img_link_elem += html_scraping(url)
+			img_urls += html_scraping(url)
 		if rem != 0:
 			url = ('https://search.yahoo.co.jp/image/search?n={}&p={}').format(rem, quote(word))
-			img_link_elem += html_scraping(url)
+			img_urls += html_scraping(url)
 	elif 0 < n < 60:
 		url = ('https://search.yahoo.co.jp/image/search?n={}&p={}'+code).format(n, quote(word))
-		img_link_elem += html_scraping(url)
+		img_urls += html_scraping(url)
 	else:
 		raise ValueError('Enter a number larger than 1.')
-
-	# img_urls = [e.get('href') for e in img_link_elem if e.get('href').startswith('http')]
-	img_urls = [e.get('src') for e in img_link_elem]
 
 	#重複を取り除くテク
 	img_urls = list(set(img_urls))
